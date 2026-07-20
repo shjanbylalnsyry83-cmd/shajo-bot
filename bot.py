@@ -5,17 +5,11 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 TOKEN = "8849687037:AAGVYH8sTkKwRQnzpnw2FNMURnyuZUga8Ho"
 
-# --- القائمة الشاملة ---
+# --- الدوال ---
 async def الاوامر(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = (
-        "✨ **قائمة أوامر بوت شاجو:**\n\n"
-        "🛠 **الإدارة:** /حظر، /طرد، /كتم، /منشن\n"
-        "🎲 **التسلية:** /نسبة_الحب، /نرد، /عملة، /تحدي، /اقتباس، /تسلية\n"
-        "🔮 **أخرى:** /سحر، /ذكاء، /زمن، /قوة، /مبارزة، /زواج، /نكتة، /صورة، /حذف، /قفل، /فتح"
-    )
+    msg = "✨ بوت شاجو يعمل! الأوامر: /حظر /طرد /كتم /منشن /نسبة_الحب /نرد /عملة /تحدي /اقتباس"
     await update.message.reply_text(msg)
 
-# --- الدوال البرمجية ---
 async def حظر(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.reply_to_message:
         await context.bot.ban_chat_member(update.effective_chat.id, update.message.reply_to_message.from_user.id)
@@ -46,24 +40,27 @@ async def عملة(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"🪙 النتيجة: {random.choice([ ملك ,  كتابة ])}")
 
 async def تحدي(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"⚡ التحدي: {random.choice([ ارسل صورة ,  غير اسمك ,  غنّي ])}")
+    خيارات = ["ارسل صورة سيلفي", "غير اسمك", "اكتب نكتة"]
+    await update.message.reply_text(f"⚡ التحدي: {random.choice(خيارات)}")
 
 async def اقتباس(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"💡 حكمة: {random.choice([ العلم نور ,  النجاح رحلة ])}")
+    حكم = ["العلم نور", "النجاح رحلة", "ابتسم للحياة"]
+    await update.message.reply_text(f"💡 حكمة: {random.choice(حكم)}")
 
 # --- التشغيل ---
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
     
-    # قائمة الأوامر
-    cmds = [
-        ("الاوامر", الاوامر), ("حظر", حظر), ("طرد", طرد), ("كتم", كتم), 
-        ("منشن", منشن), ("نسبة_الحب", نسبة_الحب), ("نرد", نرد), 
-        ("عملة", عملة), ("تحدي", تحدي), ("اقتباس", اقتباس)
-    ]
-    
-    for name, func in cmds:
-        app.add_handler(CommandHandler(name, func))
+    app.add_handler(CommandHandler("الاوامر", الاوامر))
+    app.add_handler(CommandHandler("حظر", حظر))
+    app.add_handler(CommandHandler("طرد", طرد))
+    app.add_handler(CommandHandler("كتم", كتم))
+    app.add_handler(CommandHandler("منشن", منشن))
+    app.add_handler(CommandHandler("نسبة_الحب", نسبة_الحب))
+    app.add_handler(CommandHandler("نرد", نرد))
+    app.add_handler(CommandHandler("عملة", عملة))
+    app.add_handler(CommandHandler("تحدي", تحدي))
+    app.add_handler(CommandHandler("اقتباس", اقتباس))
         
     app.run_polling()
 
