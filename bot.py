@@ -15,8 +15,10 @@ from telegram.ext import (
 # =========================
 # الإعدادات وقاعدة البيانات
 # =========================
-TOKEN = os.getenv(8849687037:AAGOnOMbLqC3BJW-b86w6jbgS7Whl_Eeyi0)
-OWNER_ID =7316796900
+TOKEN = os.getenv("
+8849687037:AAGOnOMbLqC3BJW-b86w6jbgS7Whl_Eeyi0")
+OWNER_ID = 
+7316796900 # ضع أيدي المالك هنا
 
 db = sqlite3.connect("bot_data.db", check_same_thread=False)
 cursor = db.cursor()
@@ -451,3 +453,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
