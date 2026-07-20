@@ -1,68 +1,80 @@
 
-import random
-from telegram import Update, ChatPermissions
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+​​🌑🤎import random
+import os
+from datetime import datetime
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = "8849687037:AAGVYH8sTkKwRQnzpnw2FNMURnyuZUga8Ho"
+# --- الإعدادات ---
+TOKEN = os.getenv(
+    8849687037:AAF7U-0YOK3dhakr5JOm9SMUnPpOPkMSN_Y)
 
-# --- الدوال ---
-async def الاوامر(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = "✨ بوت شاجو يعمل! الأوامر: /حظر /طرد /كتم /منشن /نسبة_الحب /نرد /عملة /تحدي /اقتباس"
-    await update.message.reply_text(msg)
+# --- قائمة الأوامر الاحترافية ---
+async def مساعدة(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("""
+🤖 أوامر بوت شاجو
 
-async def حظر(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message.reply_to_message:
-        await context.bot.ban_chat_member(update.effective_chat.id, update.message.reply_to_message.from_user.id)
-        await update.message.reply_text("🚫 تم الحظر.")
+👑 الإدارة:
+ /حظر /طرد /كتم /فك_الكتم /كتم_مؤقت /حظر_مؤقت /تحذير /حذف /تثبيت /المشرفين
 
-async def طرد(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message.reply_to_message:
-        uid = update.message.reply_to_message.from_user.id
-        await context.bot.ban_chat_member(update.effective_chat.id, uid)
-        await context.bot.unban_chat_member(update.effective_chat.id, uid)
-        await update.message.reply_text("🚪 تم الطرد.")
+⚙️ الإعدادات:
+ /الاعدادات /تفعيل_الترحيب /تعطيل_الترحيب /تفعيل_الحماية /تعطيل_الحماية
 
-async def كتم(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message.reply_to_message:
-        await context.bot.restrict_chat_member(update.effective_chat.id, update.message.reply_to_message.from_user.id, ChatPermissions(can_send_messages=False))
-        await update.message.reply_text("🔇 تم الكتم.")
+🎮 الألعاب:
+ /نرد /عملة /حظ /شخصية /احزر /سؤال /تحدي
 
-async def منشن(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("📣 @everyone تنبيه للجميع!")
+🏆 النقاط:
+ /نقاط /مستوى /ترتيب
 
-async def نسبة_الحب(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"❤️ نسبة المحبة: {random.randint(0, 100)}%")
+ℹ️ معلومات:
+ /ايدي /اسمي /حالة /الوقت /نقاطي /عشوائي
+""")
 
-async def نرد(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_dice(update.effective_chat.id)
+# --- الردود التلقائية ---
+async def ردود(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message.text: return
+    كلمة = update.message.text.lower()
+    ردود_قاموس = {
+        "السلام عليكم": "وعليكم السلام ورحمة الله وبركاته 🌹",
+        "مرحبا": "أهلاً وسهلاً بك ❤️",
+        "بوت": "🤖 أنا بوت شاجو جاهز للخدمة",
+        "شكرا": "العفو 🌹 تحت أمرك"
+    }
+    for سؤال, جواب in ردود_قاموس.items():
+        if سؤال in كلمة:
+            await update.message.reply_text(جواب)
+            break
 
-async def عملة(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"🪙 النتيجة: {random.choice([ ملك ,  كتابة ])}")
+# --- الأوامر المضافة حديثاً ---
+async def نقاطي(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("⭐ اجمع النقاط من التفاعل داخل المجموعة")
 
-async def تحدي(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    خيارات = ["ارسل صورة سيلفي", "غير اسمك", "اكتب نكتة"]
-    await update.message.reply_text(f"⚡ التحدي: {random.choice(خيارات)}")
+async def الوقت(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    الآن = datetime.now().strftime("%H:%M:%S")
+    await update.message.reply_text(f"🕒 الوقت الآن: {الآن}")
 
-async def اقتباس(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    حكم = ["العلم نور", "النجاح رحلة", "ابتسم للحياة"]
-    await update.message.reply_text(f"💡 حكمة: {random.choice(حكم)}")
+async def عشوائي(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    أرقام = random.randint(1, 100)
+    await update.message.reply_text(f"🎲 رقمك العشوائي: {أرقام}")
 
 # --- التشغيل ---
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
-    
-    app.add_handler(CommandHandler("الاوامر", الاوامر))
-    app.add_handler(CommandHandler("حظر", حظر))
-    app.add_handler(CommandHandler("طرد", طرد))
-    app.add_handler(CommandHandler("كتم", كتم))
-    app.add_handler(CommandHandler("منشن", منشن))
-    app.add_handler(CommandHandler("نسبة_الحب", نسبة_الحب))
-    app.add_handler(CommandHandler("نرد", نرد))
-    app.add_handler(CommandHandler("عملة", عملة))
-    app.add_handler(CommandHandler("تحدي", تحدي))
-    app.add_handler(CommandHandler("اقتباس", اقتباس))
-        
+
+    # تسجيل الأوامر
+    cmds = [
+        ("مساعدة", مساعدة), ("نقاطي", نقاطي), 
+        ("الوقت", الوقت), ("عشوائي", عشوائي)
+    ]
+    for name, func in cmds:
+        app.add_handler(CommandHandler(name, func))
+
+    # معالج النصوص
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, ردود))
+
+    print("✅ البوت يعمل")
     app.run_polling()
 
 if __name__ == "__main__":
     main()
+
