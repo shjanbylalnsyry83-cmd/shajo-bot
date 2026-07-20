@@ -236,6 +236,9 @@ def main():
     print("شاجو بوت المتفاعل يعمل بنجاح! 🚀")
     app.run_polling()
 
-if __name__ ==  __main__ :
+
+if __name__ == "__main__":
     main()
+
+
 
